@@ -1,0 +1,13 @@
+2020_PLSummaryFile_FieldNames.xlsx
+LICENSE.txt
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+src/PL94toSQLite3/PL94toSQLite3.py
+src/PL94toSQLite3/__init__.py
+src/PL94toSQLite3.egg-info/PKG-INFO
+src/PL94toSQLite3.egg-info/SOURCES.txt
+src/PL94toSQLite3.egg-info/dependency_links.txt
+src/PL94toSQLite3.egg-info/requires.txt
+src/PL94toSQLite3.egg-info/top_level.txt
