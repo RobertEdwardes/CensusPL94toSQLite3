@@ -22,9 +22,9 @@ def getPL94(database, Exists='drop', Table='PL94', Vintage=2020, State=None, Dir
             stateList = pd.read_csv('https://gist.githubusercontent.com/dantonnoriega/bf1acd2290e15b91e6710b6fd3be0a53/raw/11d15233327c8080c9646c7e1f23052659db251d/us-state-ansi-fips.csv',skipinitialspace=True, dtype=str)
             State = stateList[stateList['stname'] == State.upper()]
         State = State.replace(' ', '_')
-        url = f'https://www2.census.gov/programs-surveys/decennial/{vintage}/data/01-Redistricting_File--PL_94-171/{State}/'
+        url = f'https://www2.census.gov/programs-surveys/decennial/{Vintage}/data/01-Redistricting_File--PL_94-171/{State}/'
     else:
-        url = f'https://www2.census.gov/programs-surveys/decennial/{vintage}/data/01-Redistricting_File--PL_94-171/National/'
+        url = f'https://www2.census.gov/programs-surveys/decennial/{Vintage}/data/01-Redistricting_File--PL_94-171/National/'
     r = requests.get(url)
     res = r.content
     for link in BeautifulSoup(res, parse_only=SoupStrainer('a')):
@@ -70,7 +70,6 @@ def getPL94(database, Exists='drop', Table='PL94', Vintage=2020, State=None, Dir
             delt = []
             for k in df_out.columns:
                 if '_y' in k:
-
                     delt.append(k)
             df_out = df_out.drop(columns=delt)
     con = sqlite3.connect(f'{database}.db')
@@ -79,7 +78,8 @@ def getPL94(database, Exists='drop', Table='PL94', Vintage=2020, State=None, Dir
         os.remove(f'{i}.csv')
 
 def getTiger(database, Layer, Table_Name=None, Exists='append', Vintage=2020, State=None, Directory=None, file_to_table=False):
-    base_url = f'https://www2.census.gov/geo/tiger/TIGER{Vintage}/{Layer}'
+    Layer = Layer.upper()
+    base_url = f'https://www2.census.gov/geo/tiger/TIGER{Vintage}/{Layer}/'
     con = sqlite3.connect(f'{database}.db')
     if Directory:
         os.chwd(Directory)
@@ -105,8 +105,13 @@ def getTiger(database, Layer, Table_Name=None, Exists='append', Vintage=2020, St
             sta_fips =sta_fips['st'].values
         if len(sta_fips) == 0:
             raise Exception(f'{State} is not in 2 Letter Code, Spelt Right, or Not a FIPS')
+        for k in file_list:
+            if k.split('_')[2] == sta_fips:
+                file = f'{base_url}{k}'
+                tiger_process(file, Table_Name, con, Exists)
+                break
     else:
-        if Exists = 'append':
+        if Exists == 'append':
             for j in file_list:
                 file = f'{base_url}{j}'
                 tiger_process(file, Table_Name, con, Exists)

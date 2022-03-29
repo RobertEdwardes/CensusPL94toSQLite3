@@ -13,17 +13,16 @@ def main(program, path):
     os.chdir(path)
     if program == 'PL94_171' or  program == 'PL94':
         database = click.prompt('Please enter SQLite3 Database', type=str)
-        Vintage = click.prompt('Please Enter Vitage',type=click.Choice(['2010', '2020']) show_choices=True)
+        Vintage = click.prompt('Please Enter Vitage',type=click.Choice(['2010', '2020']),show_choices=True)
         Table = click.prompt('Please enter Table Name', type=str)
         getPL94(database=database, Exists='fail', Table=Table, Vintage=Vintage)
-    if program == 'Tiger_Files' or programe == 'Tiger':
+    if program == 'Tiger_Files' or program == 'Tiger':
         database = click.prompt('Please enter SQLite3 Database', type=str)
-        Vintage = click.prompt(f'Please Enter Vitage between 2010 and {datetime.now().year}', default=datetime.now().year, show_default=True)
-        State = click.promt('Choice state leave blank for entire Nation', default=None, show_default=False)
+        State = click.prompt('Choice state leave blank for entire Nation', default=None, show_default=False)
         Layer = click.prompt('Choice GIS layer or ENTER TO SEE LIST', default='List')
         if Layer == 'List':
             list_url = f'https://www2.census.gov/geo/tiger/TIGER{Vintage}'
-            base = requests.get(base_url)
+            base = requests.get(list_url)
             base_res = base.content
             file_list = []
             for link in BeautifulSoup(base_res, parse_only=SoupStrainer('a')):
@@ -31,12 +30,14 @@ def main(program, path):
                     if '.' not in link['href']:
                         if '-' not in link['href']:
                             if '=' not in link['href']:
-                                file_list.append(link.replace('/',''))
-            Layer = click.prompt('Choice GIS layer or ENTER TO SEE LIST', default='List')
+                                file_list.append(link['href'].replace('/',''))
             print(file_list)
             Layer = click.prompt('Choice GIS layer or ENTER TO SEE LIST', default='List')
-            Table_Name = click.prompt('Name of Table for Tiger Files if blank each files get it own table', default='file_to_table')
-            if Table_Name == 'file_to_table':
-                getTiger(database=database, Layer=Layer, Table_Name=None, Vintage=Vintage, State=State, file_to_table=True)
-            else:
-                getTiger(database=database, Layer=Layer, Table_Name=Table_Name, Vintage=Vintage, State=State)
+            Layer = Layer.upper()
+        Table_Name = click.prompt('Name of Table for Tiger Files if blank each files get it own table', default='file_to_table')
+        if Table_Name == 'file_to_table':
+            getTiger(database=database, Layer=Layer, Table_Name=None, State=State, file_to_table=True)
+        else:
+            getTiger(database=database, Layer=Layer, Table_Name=Table_Name, State=State)
+if __name__ == '__main__':
+    main()  
