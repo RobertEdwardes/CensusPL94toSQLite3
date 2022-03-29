@@ -8,9 +8,9 @@ long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
     
-    name='PL94toSQLite3',  
-    version='0.1.0',  
-    description='Scrape Census PL-94 datasets and builds a SQLite3 database usibg those files', 
+    name='PL94andTigertoSQLite3',  
+    version='0.1.1',  
+    description='Scrape Census PL-94 datasets and TigerFiles and builds a SQLite3 database usibg those files', 
     long_description=long_description, 
     long_description_content_type='text/markdown', 
     url='',  
@@ -29,7 +29,7 @@ setup(
     ],
     packages=find_packages(where='src'), 
     python_requires='>=3.6, <4',
-    install_requires=['pandas','bs4','wget'], 
+    install_requires=['pandas','bs4','wget','geopandas','tabulate','click'], 
     package_dir={'': 'src'},
     include_package_data=True,
     package_data={'': ['*.xlsx']},

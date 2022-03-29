@@ -1,7 +1,7 @@
 Metadata-Version: 2.1
-Name: PL94toSQLite3
-Version: 0.1.0
-Summary: Scrap Census PL-94 datasets and builds a SQLite3 database file
+Name: PL94andTigertoSQLite3
+Version: 0.1.1
+Summary: Scrape Census PL-94 datasets and TigerFiles and builds a SQLite3 database usibg those files
 Home-page: 
 Author: Robert Edwardes
 Author-email: robie@fairlines.org
